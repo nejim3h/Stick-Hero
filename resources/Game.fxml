@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stickhero.GameDisplay">
+   <children>
+      <ImageView fitHeight="601.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@background.png" />
+         </image>
+      </ImageView>
+      <Rectangle arcHeight="20.0" arcWidth="20.0" height="50.0" layoutX="396.0" layoutY="35.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="108.0" />
+      <Text layoutX="438.0" layoutY="82.0" strokeType="OUTSIDE" strokeWidth="0.0" />
+      <Text layoutX="294.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hold the space bar to stretch out the stick">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Rectangle arcHeight="20.0" arcWidth="20.0" height="50.0" layoutX="760.0" layoutY="35.0" opacity="0.5" stroke="BLACK" strokeType="INSIDE" width="63.0" />
+      <ImageView fitHeight="44.0" fitWidth="47.0" layoutX="713.0" layoutY="39.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@cherry.png" />
+         </image>
+      </ImageView>
+   </children>
+</AnchorPane>
