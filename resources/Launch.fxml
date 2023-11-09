@@ -23,14 +23,6 @@
          </font>
       </Text>
       <Rectangle arcHeight="5.0" arcWidth="5.0" height="186.0" layoutX="390.0" layoutY="414.0" stroke="BLACK" strokeType="INSIDE" width="120.0" />
-      <Button defaultButton="true" layoutX="390.0" layoutY="176.0" mnemonicParsing="false" onAction="#switchToGame" opacity="0.1" prefHeight="118.0" prefWidth="120.0" text="PLAY">
-         <font>
-            <Font name="Arial Bold" size="24.0" />
-         </font>
-         <effect>
-            <Blend />
-         </effect>
-      </Button>
       <ImageView fx:id="CharacterImage" fitHeight="32.0" fitWidth="34.0" layoutX="430.0" layoutY="382.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@character.png" />
@@ -42,12 +34,8 @@
             <Font name="Arial Black" size="20.0" />
          </font>
       </Text>
-      <Button layoutX="112.0" layoutY="307.0" mnemonicParsing="false" opacity="0.1" prefHeight="54.0" prefWidth="54.0" text="Button" textFill="WHITE" />
       <Circle fill="#ffa500" layoutX="139.0" layoutY="334.0" radius="29.0" stroke="BLACK" strokeType="INSIDE" />
-      <Button layoutX="112.0" layoutY="427.0" mnemonicParsing="false" opacity="0.1" prefHeight="54.0" prefWidth="54.0" text="Button" />
       <Circle fill="#ff9200" layoutX="139.0" layoutY="454.0" radius="29.0" stroke="BLACK" strokeType="INSIDE" />
-      <Button layoutX="721.0" layoutY="307.0" mnemonicParsing="false" opacity="0.1" prefHeight="54.0" prefWidth="54.0" text="Button" />
-      <Button layoutX="721.0" layoutY="427.0" mnemonicParsing="false" opacity="0.1" prefHeight="54.0" prefWidth="54.0" text="Button" />
       <Circle fill="#ff9200" layoutX="748.0" layoutY="334.0" radius="29.0" stroke="BLACK" strokeType="INSIDE" />
       <Circle fill="#ff9200" layoutX="748.0" layoutY="454.0" radius="29.0" stroke="BLACK" strokeType="INSIDE" />
       <ImageView fitHeight="41.0" fitWidth="41.0" layoutX="119.0" layoutY="314.0" pickOnBounds="true" preserveRatio="true">
@@ -90,5 +78,17 @@
             <Font name="Arial" size="13.0" />
          </font>
       </Text>
+      <Button layoutX="721.0" layoutY="427.0" mnemonicParsing="false" opacity="0.1" prefHeight="54.0" prefWidth="54.0" text="Button" />
+      <Button mnemonicParsing="false" opacity="0.1" prefHeight="54.0" prefWidth="54.0" text="Button" />
+      <Button layoutX="112.0" layoutY="307.0" mnemonicParsing="false" opacity="0.1" prefHeight="54.0" prefWidth="54.0" text="Button" textFill="WHITE" />
+      <Button mnemonicParsing="false" opacity="0.1" prefHeight="54.0" prefWidth="54.0" text="Button" />
+      <Button defaultButton="true" layoutX="390.0" layoutY="176.0" mnemonicParsing="false" onAction="#switchToGame" opacity="0.1" prefHeight="118.0" prefWidth="120.0" text="PLAY">
+         <font>
+            <Font name="Arial Bold" size="24.0" />
+         </font>
+         <effect>
+            <Blend />
+         </effect>
+      </Button>
    </children>
 </AnchorPane>

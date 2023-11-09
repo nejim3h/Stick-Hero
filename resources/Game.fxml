@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stickhero.Game">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stickhero.GameDisplay">
    <children>
       <ImageView fitHeight="601.0" fitWidth="900.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -28,5 +28,10 @@
             <Image url="@cherry.png" />
          </image>
       </ImageView>
+      <Button layoutX="70.0" layoutY="64.0" mnemonicParsing="false" text="GROW">
+         <font>
+            <Font name="Arial Black" size="13.0" />
+         </font>
+      </Button>
    </children>
 </AnchorPane>
