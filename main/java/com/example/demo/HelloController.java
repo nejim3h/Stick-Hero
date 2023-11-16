@@ -2,6 +2,7 @@ package com.example.demo;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,12 +29,13 @@ public class HelloController {
     protected void onButtonClick(ActionEvent event) {
         Platform platform = Platform.generateRectangle(gamepane);
         gamepane.getChildren().add(platform);
-        double currentY = platform.getHeight();
     }
 
 
     @FXML
     private Line stick;
+
+    private double currentStickLength=0;
 
     private boolean extending = false;
     private boolean extended = false;
@@ -46,10 +48,20 @@ public class HelloController {
     private Timeline extendTimeline;
 
     public void initialize() {
+        try {
+            extendTimeline = new Timeline(new KeyFrame(Duration.millis(16), event -> updateStick()));
+            extendTimeline.setCycleCount(Timeline.INDEFINITE);
+            Timeline buttonClickTimeline = new Timeline(new KeyFrame(Duration.seconds(0.1), e -> onButtonClick(null)));
+            buttonClickTimeline.play();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-        // Initialize timeline
-        extendTimeline = new Timeline(new KeyFrame(Duration.millis(16), event -> updateStick()));
-        extendTimeline.setCycleCount(Timeline.INDEFINITE);
+
+    private void initializeGame() {
+        Platform platform = Platform.generateRectangle(gamepane);
+        gamepane.getChildren().add(platform);
     }
 
     @FXML
@@ -69,14 +81,41 @@ public class HelloController {
             extendTimeline.stop();
             finalLength = stick.getEndY();
             rotateStick();
+            double len = finalLength - initialLength;
+            currentStickLength = Math.abs(len);
+            Platform platform = Platform.generateRectangle(gamepane);
+            gamepane.getChildren().add(platform);
         }
     }
+
+    private void resetStick() {
+        stick.setStartX(270);
+        stick.setEndX(270);
+        stick.setStartY(400);
+        stick.setEndY(400);
+
+        stick.getTransforms().clear();
+        extended = false;
+    }
+
+
+    public void movePaneToLeft(Pane pane, double x) {
+        TranslateTransition transition = new TranslateTransition(Duration.seconds(0.5), pane);
+        double initialTranslateX = pane.getTranslateX();
+        transition.setToX(initialTranslateX - x);
+
+        transition.setOnFinished(event -> resetStick());
+
+        transition.play();
+    }
+
 
     private void updateStick() {
         if (extending) {
             stick.setEndY(stick.getEndY() - extendSpeed);
         }
     }
+
 
     private void rotateStick() {
         double pivotX = stick.getStartX();
@@ -88,14 +127,23 @@ public class HelloController {
         Timeline rotateTimeline = new Timeline(
                 new KeyFrame(Duration.seconds(0.5), new javafx.animation.KeyValue(rotate.angleProperty(), 90))
         );
+
+        rotateTimeline.setOnFinished(event -> {
+            movePaneToLeft(gamepane, currentStickLength);
+            resetStick();
+            extended = false;
+        });
         rotateTimeline.play();
+
     }
+
 
     @FXML
     protected void onStartButtonClick(ActionEvent event) {
         SceneController sc = new SceneController();
         try {
             sc.switchToGame(event);
+            onButtonClick(null);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -108,7 +156,7 @@ class SceneController {
     private Parent root;
 
     public void SwitchToLaunch(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("Launch.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
         scene = new Scene(root);
         stage.setScene(scene);
@@ -143,29 +191,11 @@ class Platform extends Rectangle {
     public Platform() {
     }
 
-    static void initializeStartingRectangles(Pane gamePane) {
-        int rectangleWidth1 = random.nextInt(MAX_RECTANGLE_WIDTH - MIN_RECTANGLE_WIDTH) + MIN_RECTANGLE_WIDTH;
-        Rectangle rectangle1 = new Rectangle(rectangleWidth1, HEIGHT);
-        rectangle1.setFill(Color.BLACK);
-        rectangle1.setX(123 - rectangleWidth1);
-        rectangle1.setY(0);
-
-        int rectangleWidth2 = random.nextInt(MAX_RECTANGLE_WIDTH - MIN_RECTANGLE_WIDTH) + MIN_RECTANGLE_WIDTH;
-        Rectangle rectangle2 = new Rectangle(rectangleWidth2, HEIGHT);
-        rectangle2.setFill(Color.BLACK);
-        rectangle2.setX(123);
-        rectangle2.setY(0);
-
-        gamePane.getChildren().addAll(rectangle1, rectangle2);
-
-        currentX = rectangle2.getX() + rectangleWidth2;
-        previousGap = random.nextInt(MAX_GAP - MIN_GAP) + MIN_GAP;
-    }
-
     static Platform generateRectangle(Pane gamePane) {
         int gap = random.nextInt(MAX_GAP - MIN_GAP) + MIN_GAP;
+        double r = random.nextInt(41) + 20;
 
-        double newX = currentX + previousGap;
+        double newX = currentX + previousGap + r + 270;
 
         int rectangleWidth = random.nextInt(MAX_RECTANGLE_WIDTH - MIN_RECTANGLE_WIDTH) + MIN_RECTANGLE_WIDTH;
 
@@ -176,19 +206,10 @@ class Platform extends Rectangle {
 
         gamePane.getChildren().add(rectangle);
 
-        // Adjust the transition to move only by the previous gap
-//        TranslateTransition transition = new TranslateTransition(Duration.seconds(1), gamePane);
-//        transition.setToX(123 - newX); // Move the pane to reach x = 123 smoothly
-//        transition.play();
-
         currentX += previousGap + rectangleWidth;
         previousGap = gap;
 
         return null;
-    }
-
-public double getCurrentX() {
-        return currentX;
     }
 }
 
@@ -232,5 +253,6 @@ class Cherry {
         Random random = new Random();
         this.positionX = random.nextDouble() * 900;
         this.positionY = random.nextDouble() * 600;
+
     }
 }
