@@ -8,11 +8,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+
+import java.util.Objects;
+
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("MainMenu.fxml"));
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("MainMenu.fxml")));
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
