@@ -34,11 +34,17 @@ public class HelloController {
     @FXML
     private Button gameOverButton;
 
+    private Platform currentPlatform;
+
     @FXML
     protected void onButtonClick(ActionEvent event) {
+        if (currentPlatform != null) {
+            gamepane.getChildren().remove(currentPlatform);
+        }
+
         Platform.reset();
-        Platform platform = Platform.generateRectangle(gamepane);
-        gamepane.getChildren().add(platform);
+        currentPlatform = Platform.generateRectangle(gamepane);
+        gamepane.getChildren().add(currentPlatform);
     }
 
     @FXML
@@ -186,7 +192,7 @@ public class HelloController {
 
             if (Platform.isValidRange(currentStickLength)) {
                 Platform p = new Platform();
-                moveCharacter(character,p.getCurrentCoordinate());
+                moveCharacter(character,p.getCurrentCoordinate(),null);
                 if(Platform.isStickOnRedSquare(currentStickLength)) {
                     score+=2;
                     updateScoreLabel();
@@ -196,17 +202,19 @@ public class HelloController {
                     updateScoreLabel();
                 }
             }
-            else if(!isCharacterMoving && isFlipped){
-                characterFall(character,400);
-            }
+//            else if(isColliding(character,currentPlatform)){
+//                System.out.println("Collided!!!");
+//                characterFall(character,400);
+//            }
             else {
                 Platform.reset();
                 ISRUNNING = false;
-                gameScore.add(gameScore.size(),score);
+                gameScore.add(gameScore.size(), score);
                 System.out.println(gameScore);
-                moveCharacterAndFall(character, currentStickLength, 400);
 
+                moveCharacter(character, currentStickLength , () -> characterFall(character, 400));
             }
+
 
         });
         rotateTimeline.play();
@@ -214,31 +222,13 @@ public class HelloController {
     }
 
 
-    private void moveCharacterAndFall(ImageView imageView, double x, double fallDistance) {
-        TranslateTransition moveRight = new TranslateTransition(Duration.seconds(1), imageView);
-        moveRight.setToX(imageView.getTranslateX() + x);
-
-        TranslateTransition fallDown = new TranslateTransition(Duration.seconds(1), imageView);
-        fallDown.setToY(fallDistance);
-
-        SequentialTransition sequentialTransition = new SequentialTransition(moveRight, fallDown);
-
-        sequentialTransition.setOnFinished(event -> {
-            gameOverScore = getScore();
-            gameOverCherryScore = getCherryScore();
-            gameOverButton.fire();
-        });
-
-        sequentialTransition.play();
-    }
-
     private int getCherryScore() {
         return cherryCount;
     }
 
     private boolean isCharacterMoving = false;
 
-    private void moveCharacter(ImageView imageView, double x) {
+    private void moveCharacter(ImageView imageView, double x, Runnable callback) {
         double currentX = imageView.getTranslateX();
         double distance = Math.abs(x);
         double speed = 125.0;
@@ -257,7 +247,7 @@ public class HelloController {
                             System.out.println("Collision detected!");
                             updateCherryScoreLabel(cherryScoreLabel);
                             Cherry.disappearCherry(Cherry.getImage());
-                            collisionDetected[0] = true; // Set the flag to true after executing the method
+                            collisionDetected[0] = true;
                         }
                     }
             );
@@ -272,6 +262,11 @@ public class HelloController {
                     movePaneToLeft(gamepane, (p.getCurrentCoordinate()));
                     resetStick();
                     extended = false;
+
+                    // Execute the callback after the character movement is complete
+                    if (callback != null) {
+                        callback.run();
+                    }
                 }
         );
         timeline.getKeyFrames().add(finalKeyFrame);
@@ -285,8 +280,13 @@ public class HelloController {
     }
 
 
+
     private boolean isColliding(ImageView character, ImageView cherry) {
         return character.getBoundsInParent().intersects(cherry.getBoundsInParent());
+    }
+
+    private boolean isColliding(ImageView character, Platform p) {
+        return character.getBoundsInParent().intersects(p.getBoundsInParent());
     }
 
 
