@@ -65,7 +65,7 @@
             <Blend />
         </effect>
     </Button>
-   <Button layoutX="112.0" layoutY="427.0" mnemonicParsing="false" opacity="0.1" prefHeight="54.0" prefWidth="54.0" text="Button" textFill="WHITE" />
-   <Button layoutX="721.0" layoutY="307.0" mnemonicParsing="false" onAction="#onLoadButtonClick" opacity="0.1" prefHeight="54.0" prefWidth="54.0" text="Button" textFill="WHITE" />
-   <Button layoutX="324.0" layoutY="208.0" mnemonicParsing="false" onAction="#onGameOverButtonClick" opacity="0.1" prefHeight="54.0" prefWidth="54.0" text="Button" textFill="WHITE" />
+    <Button layoutX="112.0" layoutY="427.0" mnemonicParsing="false" opacity="0.1" prefHeight="54.0" prefWidth="54.0" text="Button" textFill="WHITE" />
+    <Button layoutX="721.0" layoutY="307.0" mnemonicParsing="false" onAction="#onLoadButtonClick" opacity="0.1" prefHeight="54.0" prefWidth="54.0" text="Button" textFill="WHITE" />
+    <Button layoutX="324.0" layoutY="208.0" mnemonicParsing="false" onAction="#onGameOverButtonClick" opacity="0.1" prefHeight="54.0" prefWidth="54.0" text="Button" textFill="WHITE" />
 </AnchorPane>
