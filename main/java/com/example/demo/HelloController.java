@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.stickhero;
 
 import javafx.animation.*;
 import javafx.event.ActionEvent;
@@ -97,11 +97,15 @@ public class HelloController {
     }
 
     private void updateScoreLabel() {
+//        System.out.println("score");
+//        System.out.println(score);
         scoreLabel.setText(String.valueOf(score));
     }
 
     private void updateCherryScoreLabel() {
-        scoreLabel.setText(String.valueOf(cherryCount));
+//        System.out.println("cherry");
+//        System.out.println(cherryCount);
+        cherryScoreLabel.setText(String.valueOf(cherryCount));
     }
 
     private boolean flip = false;
@@ -159,8 +163,8 @@ public class HelloController {
 
         transition.setOnFinished(event -> {
             Platform p = new Platform();
-             Platform platform = Platform.generateRectangle(gamepane);
-             gamepane.getChildren().add(platform);
+            Platform platform = Platform.generateRectangle(gamepane);
+            gamepane.getChildren().add(platform);
 
             resetStick();
         });
@@ -290,11 +294,21 @@ public class HelloController {
     }
 
 
-    private void updateCherryScoreLabel(Label cherryScoreLabel) {
+    public void setCherryScore(int count) {
+        cherryCount= count;
+        updateCherryScoreLabel();
+    }
+
+    public void setGameScore(int count) {
+        score= count;
+        updateScoreLabel();
+    }
+
+
+    public void updateCherryScoreLabel(Label cherryScoreLabel) {
         cherryCount++;
         cherryScoreLabel.setText(String.valueOf(cherryCount));
     }
-
 
     private void characterFall(ImageView imageView, double fallDistance) {
 
@@ -328,6 +342,8 @@ public class HelloController {
     protected void onGameOverButtonClick(ActionEvent event) {
         SceneController sc = new SceneController();
         try {
+            sc.setGameScore(getScore());
+            sc.setCherryCount(getCherryScore());
             sc.switchToGameOver(event);
         } catch (IOException e) {
             e.printStackTrace();
@@ -356,6 +372,18 @@ public class HelloController {
         }
     }
 
+    @FXML
+    protected void onReviveButtonClick(ActionEvent event) {
+        SceneController sc = new SceneController();
+        try {
+            sc.setGameScore(getScore());
+            sc.setCherryCount(getCherryScore()-2);
+            sc.switchToRevivedGame(event);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void setScore(int x) {
         score = x;
     }
@@ -366,14 +394,46 @@ class SceneController {
     private Stage stage;
     private Scene scene;
     private Parent root;
+    private int gameScore;
+    private int cherryCount;
+
+    public void setGameScore(int count){
+        gameScore=count;
+    }
+
+    public void setCherryCount(int count){
+        cherryCount=count;
+    }
 
     public void switchToGameOver(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("GameOver.fxml"));
-        stage = (Stage)((Node)event.getSource()).getScene().getWindow();
-        scene = new Scene(root);
-        stage.setScene(scene);
-        stage.show();
+        FXMLLoader gameOverLoader = new FXMLLoader(getClass().getResource("GameOver.fxml"));
+        Parent gameOverRoot = gameOverLoader.load();
+        HelloController gameOverController = gameOverLoader.getController();
+
+        gameOverController.setGameScore(gameScore);
+        gameOverController.setCherryScore(cherryCount);
+
+        Scene gameOverScene = new Scene(gameOverRoot);
+        Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        primaryStage.setScene(gameOverScene);
+        primaryStage.show();
     }
+
+    public void switchToRevivedGame(ActionEvent event) throws IOException {
+        FXMLLoader gameOverLoader = new FXMLLoader(getClass().getResource("Game.fxml"));
+        Parent gameOverRoot = gameOverLoader.load();
+        HelloController gameOverController = gameOverLoader.getController();
+
+        gameOverController.setGameScore(gameScore);
+        gameOverController.setCherryScore(cherryCount);
+
+        Scene gameOverScene = new Scene(gameOverRoot);
+        Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        primaryStage.setScene(gameOverScene);
+        primaryStage.show();
+    }
+
+
     public void switchToGame(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("Game.fxml"));
         stage = (Stage)((Node)event.getSource()).getScene().getWindow();
@@ -397,6 +457,7 @@ class SceneController {
         stage.setScene(scene);
         stage.show();
     }
+
 }
 
 
