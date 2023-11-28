@@ -1,4 +1,4 @@
-package com.example.stickhero;
+package com.example.demo;
 
 import javafx.animation.*;
 import javafx.event.ActionEvent;
