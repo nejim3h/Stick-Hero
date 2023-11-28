@@ -31,28 +31,43 @@
             <Font name="Arial Black" size="13.0" />
         </font>
     </Button>
-   <Pane fx:id="gamepane" layoutX="2.0" layoutY="400.0" prefHeight="200.0" prefWidth="896.0">
-      <children>
-         <Rectangle arcHeight="5.0" arcWidth="5.0" height="200.0" layoutX="199.0" stroke="BLACK" strokeType="INSIDE" width="69.0" />
-      </children></Pane>
-   <Line fx:id="stick" endX="270.0" endY="400.0" startX="270.0" startY="400.0" strokeWidth="3.0" />
-   <ImageView fx:id="character" fitHeight="59.0" fitWidth="33.0" layoutX="236.0" layoutY="365.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@character.png" />
-      </image>
-   </ImageView>
-   <Button layoutX="190.0" layoutY="66.0" mnemonicParsing="false" onAction="#onButtonClick" text="GET">
-      <font>
-         <Font name="Arial Black" size="13.0" />
-      </font></Button>
-   <Label fx:id="scoreLabel" layoutX="441.0" layoutY="39.0" prefHeight="42.0" prefWidth="54.0" text="0" textFill="WHITE">
-      <font>
-         <Font name="Arial Black" size="24.0" />
-      </font>
-   </Label>
-   <Button layoutX="578.0" layoutY="63.0" mnemonicParsing="false" onAction="#onStartButtonClick" onKeyPressed="#onKeyPress" onKeyReleased="#onKeyRelease" text="Restart">
+    <Pane fx:id="gamepane" layoutY="350.0" prefHeight="249.0" prefWidth="896.0">
+        <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" height="200.0" layoutX="201.0" layoutY="49.0" stroke="BLACK" strokeType="INSIDE" width="69.0" />
+          <ImageView fx:id="character" fitHeight="59.0" fitWidth="33.0" layoutX="235.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true">
+              <image>
+                  <Image url="@character.png" />
+              </image>
+          </ImageView>
+        </children></Pane>
+    <Line fx:id="stick" endX="270.0" endY="400.0" startX="270.0" startY="400.0" strokeWidth="3.0" />
+    <Button layoutX="190.0" layoutY="66.0" mnemonicParsing="false" onAction="#onButtonClick" text="GET">
+        <font>
+            <Font name="Arial Black" size="13.0" />
+        </font></Button>
+    <Label fx:id="scoreLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="421.0" layoutY="39.0" prefHeight="42.0" prefWidth="54.0" text="0" textFill="WHITE">
+        <font>
+            <Font name="Arial Black" size="24.0" />
+        </font>
+    </Label>
+    <Button layoutX="578.0" layoutY="63.0" mnemonicParsing="false" onAction="#onStartButtonClick" onKeyPressed="#onKeyPress" onKeyReleased="#onKeyRelease" opacity="0.01" text="Restart">
+        <font>
+            <Font name="Arial Black" size="13.0" />
+        </font>
+    </Button>
+   <Button defaultButton="true" layoutX="349.0" layoutY="158.0" mnemonicParsing="false" onAction="#onMainMenuButtonClick" text="Main Menu">
       <font>
          <Font name="Arial Black" size="13.0" />
       </font>
    </Button>
+   <Button fx:id="gameOverButton" defaultButton="true" layoutX="457.0" layoutY="158.0" mnemonicParsing="false" onAction="#onGameOverButtonClick" text="Game Over">
+      <font>
+         <Font name="Arial Black" size="13.0" />
+      </font>
+   </Button>
+   <Label fx:id="cherryScoreLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="765.0" layoutY="39.0" prefHeight="42.0" prefWidth="54.0" text="0" textFill="WHITE">
+      <font>
+         <Font name="Arial Black" size="24.0" />
+      </font>
+   </Label>
 </AnchorPane>
