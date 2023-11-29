@@ -175,6 +175,9 @@ public class HelloController {
 
             resetStick();
         });
+        if(isFlipped) {
+            characterFall(character, 400);
+        }
 
         transition.play();
     }
