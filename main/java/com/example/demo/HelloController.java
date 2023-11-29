@@ -167,6 +167,9 @@ public class HelloController {
         TranslateTransition transition = new TranslateTransition(Duration.seconds(0.5), pane);
         double initialTranslateX = pane.getTranslateX();
         transition.setToX(initialTranslateX - x);
+        if(isFlipped) {
+            characterFall(character, 400);
+        }
 
         transition.setOnFinished(event -> {
             Platform p = new Platform();
@@ -175,9 +178,6 @@ public class HelloController {
 
             resetStick();
         });
-        if(isFlipped) {
-            characterFall(character, 400);
-        }
 
         transition.play();
     }
@@ -216,23 +216,13 @@ public class HelloController {
                     updateScoreLabel();
                 }
             }
-//            else if(isColliding(character,currentPlatform)){
-//                System.out.println("Collided!!!");
-//                characterFall(character,400);
-//            }
             else {
                 Platform.reset();
                 ISRUNNING = false;
-                gameScore.add(gameScore.size(), score);
-                System.out.println(gameScore);
-
                 moveCharacter(character, currentStickLength , () -> characterFall(character, 400));
             }
-
-
         });
         rotateTimeline.play();
-
     }
 
 
@@ -277,7 +267,6 @@ public class HelloController {
                     resetStick();
                     extended = false;
 
-                    // Execute the callback after the character movement is complete
                     if (callback != null) {
                         callback.run();
                     }
@@ -297,10 +286,6 @@ public class HelloController {
 
     private boolean isColliding(ImageView character, ImageView cherry) {
         return character.getBoundsInParent().intersects(cherry.getBoundsInParent());
-    }
-
-    private boolean isColliding(ImageView character, Platform p) {
-        return character.getBoundsInParent().intersects(p.getBoundsInParent());
     }
 
 
@@ -412,13 +397,6 @@ public class HelloController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-
-
-
-    public void setScore(int x) {
-        score = x;
     }
 }
 
@@ -699,8 +677,7 @@ class Cherry {
         cherryImageView.setFitWidth(25);
         cherryImageView.setFitHeight(25);
 
-        // Generate a random x-coordinate within the specified range
-        double cherryX = Math.random() * (x2 - x1 - 25) + x1; // Adjusted for the cherry width (50)
+        double cherryX = Math.random() * (x2 - x1 - 25) + x1;
         double cherryY = 55;
         setPositionX(cherryX);
         setPositionY(cherryY);
@@ -720,5 +697,4 @@ class Cherry {
         fadeOut.setToValue(0.0);
         fadeOut.play();
     }
-
 }
