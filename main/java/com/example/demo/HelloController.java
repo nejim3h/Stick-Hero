@@ -340,8 +340,8 @@ public class HelloController {
         try {
             sc.setGameScore(getScore());
             sc.setCherryCount(getCherryScore());
-            sc.switchToGameOver(event);
             sc.setSavedGames(savedGames);
+            sc.switchToGameOver(event);
         } catch (IOException e) {
             e.printStackTrace();
         }
