@@ -41,6 +41,11 @@
             <Font name="Arial Black" size="13.0" />
         </font>
     </Button>
+    <Button fx:id="gameOverButton" defaultButton="true" layoutX="182.0" layoutY="10.0" mnemonicParsing="false" onAction="#onGameOverButtonClick" opacity="0.0" prefHeight="50.0" prefWidth="50.0" text="Game Over">
+        <font>
+            <Font name="Arial Black" size="13.0" />
+        </font>
+    </Button>
     <Button layoutX="215.0" layoutY="14.0" mnemonicParsing="false" onAction="#onButtonClick" opacity="0.0" text="GET">
         <font>
             <Font name="Arial Black" size="13.0" />
@@ -50,14 +55,8 @@
             <Font name="Arial Black" size="24.0" />
         </font>
     </Label>
-   <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#ffbf75" height="50.0" layoutX="362.0" layoutY="160.0" stroke="BLACK" strokeType="INSIDE" width="50.0" />
-   <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#ffbc6f" height="50.0" layoutX="482.0" layoutY="160.0" stroke="BLACK" strokeType="INSIDE" width="50.0" />
-   <ImageView fitHeight="36.0" fitWidth="36.0" layoutX="489.0" layoutY="167.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@exit.png" />
-      </image>
-   </ImageView>
-   <ImageView fitHeight="39.0" fitWidth="39.0" layoutX="367.0" layoutY="166.0" pickOnBounds="true" preserveRatio="true">
+   <Rectangle arcHeight="10.0" arcWidth="10.0" fill="#ffbf75" height="50.0" layoutX="425.0" layoutY="169.0" stroke="BLACK" strokeType="INSIDE" width="50.0" />
+   <ImageView fitHeight="39.0" fitWidth="39.0" layoutX="431.0" layoutY="175.0" pickOnBounds="true" preserveRatio="true">
       <image>
          <Image url="@Pause.png" />
       </image>
@@ -67,17 +66,12 @@
             <Font name="Arial Black" size="13.0" />
         </font>
     </Button>
-    <Button fx:id="gameOverButton" defaultButton="true" layoutX="482.0" layoutY="160.0" mnemonicParsing="false" onAction="#onGameOverButtonClick" opacity="0.1" prefHeight="50.0" prefWidth="50.0" text="Game Over">
-        <font>
-            <Font name="Arial Black" size="13.0" />
-        </font>
-    </Button>
     <Label fx:id="cherryScoreLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="765.0" layoutY="39.0" prefHeight="42.0" prefWidth="54.0" text="0" textFill="WHITE">
         <font>
             <Font name="Arial Black" size="24.0" />
         </font>
     </Label>
-    <Button defaultButton="true" layoutX="362.0" layoutY="160.0" mnemonicParsing="false" onAction="#onPauseButtonClick" opacity="0.1" prefHeight="50.0" prefWidth="50.0" text="Pause Game">
+    <Button defaultButton="true" layoutX="425.0" layoutY="169.0" mnemonicParsing="false" onAction="#onPauseButtonClick" opacity="0.1" prefHeight="50.0" prefWidth="50.0" text="Pause Game">
         <font>
             <Font name="Arial Black" size="13.0" />
         </font>
