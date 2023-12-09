@@ -89,5 +89,15 @@
             <Image url="@Cherry.png" />
          </image>
       </ImageView>
+      <Text layoutX="390.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BEST SCORE">
+         <font>
+            <Font name="Arial Bold" size="18.0" />
+         </font>
+      </Text>
+      <Label fx:id="highestScore" alignment="CENTER" layoutX="417.0" layoutY="134.0" prefHeight="37.0" prefWidth="64.0" text="0">
+         <font>
+            <Font name="Arial Black" size="30.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
