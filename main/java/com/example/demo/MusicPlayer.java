@@ -64,6 +64,8 @@ class StickSound extends Sound {
 }
 
 
+//Facade design pattern used for MusicPlayer
+
 public class MusicPlayer {
     Sound stick;
     Sound fall;

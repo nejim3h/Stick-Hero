@@ -31,7 +31,7 @@ public class PauseController {
 
     @FXML
     private void onResumeButtonClick(ActionEvent event){
-        SceneController sc = new SceneController();
+        SceneController sc = SceneController.getInstance();
         try {
             sc.setHighScore(highScore);
             sc.setCherryCount(cherryScore);
@@ -46,7 +46,7 @@ public class PauseController {
 
     @FXML
     private void onExitButtonClick(ActionEvent event){
-        SceneController sc = new SceneController();
+        SceneController sc = SceneController.getInstance();
         try {
             sc.setHighScore(highScore);
             sc.setSavedGames(savedGames);

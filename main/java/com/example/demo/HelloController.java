@@ -79,6 +79,7 @@ public class HelloController {
 
     public void setHighScore(int highScore) {
         this.highScore = highScore;
+        updateHighScoreLabel();
     }
 
     private int gameOverScore;
@@ -265,12 +266,6 @@ public class HelloController {
                         updateHighScoreLabel();
                     }
                 }
-//                if(highScore<score){
-//                    System.out.println(score);
-//                    setHighScore(score);
-//                    updateHighScoreLabel();
-//                    System.out.println(highScore);
-//                }
             }
             else {
                 Platform.reset();
@@ -387,7 +382,7 @@ public class HelloController {
 
     @FXML
     protected void onMainMenuButtonClick(ActionEvent event) {
-        SceneController sc = new SceneController();
+        SceneController sc = SceneController.getInstance();
         try {
             sc.setHighScore(highScore);
             sc.setSavedGames(savedGames);
@@ -398,7 +393,7 @@ public class HelloController {
     }
     @FXML
     protected void onGameOverButtonClick(ActionEvent event) {
-        SceneController sc = new SceneController();
+        SceneController sc = SceneController.getInstance();
         try {
             sc.setHighScore(highScore);
             sc.setGameScore(getScore());
@@ -414,7 +409,7 @@ public class HelloController {
 
     @FXML
     protected void onStartButtonClick(ActionEvent event) {
-        SceneController sc = new SceneController();
+        SceneController sc = SceneController.getInstance();
         try {
             sc.setHighScore(highScore);
             sc.setSavedGames(savedGames);
@@ -427,7 +422,7 @@ public class HelloController {
 
     @FXML
     protected void onLoadButtonClick(ActionEvent event) {
-        SceneController sc = new SceneController();
+        SceneController sc = SceneController.getInstance();
         try {
             sc.setHighScore(highScore);
             sc.setSavedGames(savedGames);
@@ -441,7 +436,7 @@ public class HelloController {
     @FXML
     protected void onReviveButtonClick(ActionEvent event) {
         if(getCherryScore()>=2) {
-            SceneController sc = new SceneController();
+            SceneController sc = SceneController.getInstance();
             try {
                 sc.setHighScore(highScore);
                 sc.setGameScore(getScore());
@@ -456,7 +451,7 @@ public class HelloController {
 
     @FXML
     protected void onPauseButtonClick(ActionEvent event) {
-        SceneController sc = new SceneController();
+        SceneController sc = SceneController.getInstance();
         try {
             sc.setHighScore(highScore);
             sc.setGameScore(getScore());
@@ -469,14 +464,26 @@ public class HelloController {
     }
 }
 
-
+// Singleton Design Pattern used for SceneController
 class SceneController {
+
     private Stage stage;
     private Scene scene;
     private Parent root;
     private int highScore;
     private int gameScore;
     private int cherryCount;
+
+    private static SceneController mySc = null;
+
+    private SceneController (){}
+
+    public static SceneController getInstance(){
+        if(mySc==null){
+            mySc= new SceneController();
+        }
+        return mySc;
+    }
 
     private ArrayList<Pair<Integer,Integer>> savedGames = new ArrayList<>();
 
@@ -500,6 +507,7 @@ class SceneController {
         FXMLLoader gameOverLoader = new FXMLLoader(getClass().getResource("GameOver.fxml"));
         Parent gameOverRoot = gameOverLoader.load();
         HelloController gameOverController = gameOverLoader.getController();
+        System.out.println(highScore);
         gameOverController.setHighScore(highScore);
         gameOverController.setGameScore(gameScore);
         gameOverController.setCherryScore(cherryCount);

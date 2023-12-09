@@ -36,7 +36,7 @@ public class Save {
 
     @FXML
     protected void onMainMenuButtonClick(ActionEvent event) {
-        SceneController sc = new SceneController();
+        SceneController sc = SceneController.getInstance();
         try {
             sc.setHighScore(highScore);
             sc.setSavedGames(savedGames);

@@ -17,23 +17,23 @@
             <Image url="@background.png" />
          </image>
       </ImageView>
-      <Text layoutX="308.0" layoutY="72.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GAME OVER!">
+      <Text layoutX="309.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="GAME OVER!">
          <font>
             <Font name="Arial Black" size="40.0" />
          </font>
       </Text>
-      <Rectangle arcHeight="20.0" arcWidth="20.0" fill="WHITE" height="263.0" layoutX="309.0" layoutY="93.0" stroke="BLACK" strokeType="INSIDE" width="282.0" />
-      <Text layoutX="418.0" layoutY="208.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SCORE">
+      <Rectangle arcHeight="20.0" arcWidth="20.0" fill="WHITE" height="243.0" layoutX="309.0" layoutY="113.0" stroke="BLACK" strokeType="INSIDE" width="282.0" />
+      <Text layoutX="417.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SCORE">
          <font>
             <Font name="Arial Bold" size="18.0" />
          </font>
       </Text>
-      <Text layoutX="377.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHERRY COUNT">
+      <Text layoutX="377.0" layoutY="286.0" strokeType="OUTSIDE" strokeWidth="0.0" text="CHERRY COUNT">
          <font>
             <Font name="Arial Bold" size="18.0" />
          </font>
       </Text>
-      <Label fx:id="scoreLabel" alignment="CENTER" layoutX="417.0" layoutY="213.0" prefHeight="37.0" prefWidth="64.0" text="0">
+      <Label fx:id="scoreLabel" alignment="CENTER" layoutX="417.0" layoutY="181.0" prefHeight="37.0" prefWidth="64.0" text="0">
          <font>
             <Font name="Arial Black" size="30.0" />
          </font>
@@ -89,15 +89,5 @@
             <Image url="@Cherry.png" />
          </image>
       </ImageView>
-      <Text layoutX="390.0" layoutY="130.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BEST SCORE">
-         <font>
-            <Font name="Arial Bold" size="18.0" />
-         </font>
-      </Text>
-      <Label fx:id="highestScore" alignment="CENTER" layoutX="417.0" layoutY="134.0" prefHeight="37.0" prefWidth="64.0" text="0">
-         <font>
-            <Font name="Arial Black" size="30.0" />
-         </font>
-      </Label>
    </children>
 </AnchorPane>
