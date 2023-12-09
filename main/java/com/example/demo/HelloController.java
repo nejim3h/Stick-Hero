@@ -37,6 +37,10 @@ public class HelloController {
 
     private Platform currentPlatform;
 
+    public boolean platformInit;
+
+    MusicPlayer mp = new MusicPlayer();
+
     private ArrayList<Pair<Integer,Integer>> savedGames= new ArrayList<>();
 
     public void setSavedGames(ArrayList<Pair<Integer,Integer>>savedGames) {
@@ -51,11 +55,17 @@ public class HelloController {
 
         Platform.reset();
         currentPlatform = Platform.generateRectangle(gamepane);
+
         gamepane.getChildren().add(currentPlatform);
+        platformInit = true;
     }
 
     @FXML
-    private Label scoreLabel;
+    Label scoreLabel;
+
+    @FXML
+    Label highestScore;
+
     @FXML
     private Label cherryScoreLabel;
 
@@ -64,6 +74,12 @@ public class HelloController {
 
     private int cherryCount = 0;
     private int score = 0;
+
+    private int highScore = 0;
+
+    public void setHighScore(int highScore) {
+        this.highScore = highScore;
+    }
 
     private int gameOverScore;
 
@@ -94,25 +110,47 @@ public class HelloController {
     public void initialize() {
         try {
             updateScoreLabel();
+            updateHighScoreLabel();
             updateCherryScoreLabel();
             extendTimeline = new Timeline(new KeyFrame(Duration.millis(16), event -> updateStick()));
-            extendTimeline.setCycleCount(Timeline.INDEFINITE);
-            onButtonClick(null);
+            try {
+                extendTimeline.setCycleCount(Timeline.INDEFINITE);
+                onButtonClick(null);
+            }catch (NullPointerException n){}
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void updateScoreLabel() {
-//        System.out.println("score");
-//        System.out.println(score);
-        scoreLabel.setText(String.valueOf(score));
+    public Timeline getExtendTimeline() {
+        return extendTimeline;
+    }
+
+    void updateScoreLabel() {
+        try {
+            scoreLabel.setText(String.valueOf(score));
+        }
+        catch (NullPointerException n) {
+
+        }
+    }
+
+    void updateHighScoreLabel() {
+        try {
+            highestScore.setText(String.valueOf(highScore));
+        }
+        catch (NullPointerException n) {
+
+        }
     }
 
     private void updateCherryScoreLabel() {
-//        System.out.println("cherry");
-//        System.out.println(cherryCount);
-        cherryScoreLabel.setText(String.valueOf(cherryCount));
+        try {
+            cherryScoreLabel.setText(String.valueOf(cherryCount));
+        }
+        catch (NullPointerException n) {
+
+        }
     }
 
     private boolean flip = false;
@@ -164,6 +202,7 @@ public class HelloController {
 
 
     public void movePaneToLeft(Pane pane, double x) {
+        mp.playSound("levelUp");
         TranslateTransition transition = new TranslateTransition(Duration.seconds(0.5), pane);
         double initialTranslateX = pane.getTranslateX();
         transition.setToX(initialTranslateX - x);
@@ -174,7 +213,9 @@ public class HelloController {
         transition.setOnFinished(event -> {
             Platform p = new Platform();
             Platform platform = Platform.generateRectangle(gamepane);
-            gamepane.getChildren().add(platform);
+            try {
+                gamepane.getChildren().add(platform);
+            }catch (NullPointerException n) {}
 
             resetStick();
         });
@@ -193,13 +234,13 @@ public class HelloController {
     private void rotateStick() {
         double pivotX = stick.getStartX();
         double pivotY = stick.getStartY();
-
+        mp.playSound("stick");
 
         Rotate rotate = new Rotate(0, pivotX, pivotY);
         stick.getTransforms().add(rotate);
 
         Timeline rotateTimeline = new Timeline(
-                new KeyFrame(Duration.seconds(0.5), new javafx.animation.KeyValue(rotate.angleProperty(), 90))
+                new KeyFrame(Duration.seconds(0.75), new javafx.animation.KeyValue(rotate.angleProperty(), 90))
         );
 
         rotateTimeline.setOnFinished(event -> {
@@ -210,23 +251,39 @@ public class HelloController {
                 if(Platform.isStickOnRedSquare(currentStickLength)) {
                     score+=2;
                     updateScoreLabel();
+                    if(highScore<score) {
+                        setHighScore(score);
+                        updateHighScoreLabel();
+                    }
+
                 }
                 else{
                     score++;
                     updateScoreLabel();
+                    if(highScore<score) {
+                        setHighScore(score);
+                        updateHighScoreLabel();
+                    }
                 }
+//                if(highScore<score){
+//                    System.out.println(score);
+//                    setHighScore(score);
+//                    updateHighScoreLabel();
+//                    System.out.println(highScore);
+//                }
             }
             else {
                 Platform.reset();
                 ISRUNNING = false;
                 moveCharacter(character, currentStickLength , () -> characterFall(character, 400));
             }
+
         });
         rotateTimeline.play();
     }
 
 
-    private int getCherryScore() {
+    public int getCherryScore() {
         return cherryCount;
     }
 
@@ -247,8 +304,12 @@ public class HelloController {
             KeyFrame keyFrame = new KeyFrame(
                     javafx.util.Duration.seconds(currentTime),
                     event -> {
-                        if (!collisionDetected[0] && isColliding(imageView, Cherry.getImage())) {
-                            System.out.println("Collision detected!");
+                        boolean intersection = false;
+                        try {
+                            intersection = character.getBoundsInParent().intersects(Cherry.getImage().getBoundsInParent());
+                        }catch (NullPointerException n ){}
+
+                        if (!collisionDetected[0] && intersection) {
                             updateCherryScoreLabel(cherryScoreLabel);
                             Cherry.disappearCherry(Cherry.getImage());
                             collisionDetected[0] = true;
@@ -284,7 +345,7 @@ public class HelloController {
 
 
 
-    private boolean isColliding(ImageView character, ImageView cherry) {
+    private boolean isColliding(ImageView character, ImageView cherry){
         return character.getBoundsInParent().intersects(cherry.getBoundsInParent());
     }
 
@@ -306,8 +367,8 @@ public class HelloController {
     }
 
     private void characterFall(ImageView imageView, double fallDistance) {
-
-        TranslateTransition fallDown = new TranslateTransition(Duration.seconds(1), imageView);
+        mp.playSound("fall");
+        TranslateTransition fallDown = new TranslateTransition(Duration.seconds(2), imageView);
         fallDown.setToY(fallDistance);
 
 
@@ -328,6 +389,7 @@ public class HelloController {
     protected void onMainMenuButtonClick(ActionEvent event) {
         SceneController sc = new SceneController();
         try {
+            sc.setHighScore(highScore);
             sc.setSavedGames(savedGames);
             sc.switchToMainMenu(event);
         } catch (IOException e) {
@@ -338,10 +400,13 @@ public class HelloController {
     protected void onGameOverButtonClick(ActionEvent event) {
         SceneController sc = new SceneController();
         try {
+            sc.setHighScore(highScore);
             sc.setGameScore(getScore());
             sc.setCherryCount(getCherryScore());
             sc.setSavedGames(savedGames);
-            sc.switchToGameOver(event);
+            try {
+                sc.switchToGameOver(event);
+            }catch (NullPointerException n){}
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -351,6 +416,7 @@ public class HelloController {
     protected void onStartButtonClick(ActionEvent event) {
         SceneController sc = new SceneController();
         try {
+            sc.setHighScore(highScore);
             sc.setSavedGames(savedGames);
             sc.switchToGame(event);
             ISRUNNING = true;
@@ -363,6 +429,7 @@ public class HelloController {
     protected void onLoadButtonClick(ActionEvent event) {
         SceneController sc = new SceneController();
         try {
+            sc.setHighScore(highScore);
             sc.setSavedGames(savedGames);
             sc.switchToSavedMenu(event);
             ISRUNNING = true;
@@ -376,6 +443,7 @@ public class HelloController {
         if(getCherryScore()>=2) {
             SceneController sc = new SceneController();
             try {
+                sc.setHighScore(highScore);
                 sc.setGameScore(getScore());
                 sc.setSavedGames(savedGames);
                 sc.setCherryCount(getCherryScore() - 2);
@@ -390,6 +458,7 @@ public class HelloController {
     protected void onPauseButtonClick(ActionEvent event) {
         SceneController sc = new SceneController();
         try {
+            sc.setHighScore(highScore);
             sc.setGameScore(getScore());
             sc.setCherryCount(getCherryScore());
             sc.setSavedGames(savedGames);
@@ -405,6 +474,7 @@ class SceneController {
     private Stage stage;
     private Scene scene;
     private Parent root;
+    private int highScore;
     private int gameScore;
     private int cherryCount;
 
@@ -412,6 +482,10 @@ class SceneController {
 
     public void setSavedGames(ArrayList<Pair<Integer,Integer>>savedGames) {
         this.savedGames = savedGames;
+    }
+
+    public void setHighScore(int highScore) {
+        this.highScore = highScore;
     }
 
     public void setGameScore(int count){
@@ -426,13 +500,15 @@ class SceneController {
         FXMLLoader gameOverLoader = new FXMLLoader(getClass().getResource("GameOver.fxml"));
         Parent gameOverRoot = gameOverLoader.load();
         HelloController gameOverController = gameOverLoader.getController();
-
+        gameOverController.setHighScore(highScore);
         gameOverController.setGameScore(gameScore);
         gameOverController.setCherryScore(cherryCount);
         gameOverController.setSavedGames(savedGames);
         Scene gameOverScene = new Scene(gameOverRoot);
         Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        primaryStage.setScene(gameOverScene);
+        try {
+            primaryStage.setScene(gameOverScene);
+        }catch (NullPointerException n){}
         primaryStage.show();
     }
 
@@ -440,7 +516,7 @@ class SceneController {
         FXMLLoader gameOverLoader = new FXMLLoader(getClass().getResource("Game.fxml"));
         Parent gameOverRoot = gameOverLoader.load();
         HelloController gameOverController = gameOverLoader.getController();
-
+        gameOverController.setHighScore(highScore);
         gameOverController.setGameScore(gameScore);
         gameOverController.setCherryScore(cherryCount);
         gameOverController.setSavedGames(savedGames);
@@ -456,7 +532,7 @@ class SceneController {
         Parent gameOverRoot = gameOverLoader.load();
         HelloController gameOverController = gameOverLoader.getController();
         gameOverController.setSavedGames(savedGames);
-
+        gameOverController.setHighScore(highScore);
         Scene gameOverScene = new Scene(gameOverRoot);
         Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         primaryStage.setScene(gameOverScene);
@@ -468,7 +544,7 @@ class SceneController {
         Parent gameOverRoot = gameOverLoader.load();
         HelloController gameOverController = gameOverLoader.getController();
         gameOverController.setSavedGames(savedGames);
-
+        gameOverController.setHighScore(highScore);
         Scene gameOverScene = new Scene(gameOverRoot);
         Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         primaryStage.setScene(gameOverScene);
@@ -482,7 +558,7 @@ class SceneController {
         Save newController = loader.getController();
 
         newController.setSavedGames(savedGames);
-
+        newController.setHighScore(highScore);
         Scene newScene = new Scene(root);
         Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         primaryStage.setScene(newScene);
@@ -493,11 +569,10 @@ class SceneController {
         FXMLLoader gameOverLoader = new FXMLLoader(getClass().getResource("Pause.fxml"));
         Parent gameOverRoot = gameOverLoader.load();
         PauseController gameOverController = gameOverLoader.getController();
-
         gameOverController.setSavedGames(savedGames);
         gameOverController.setCherryScore(cherryCount);
         gameOverController.setGameScore(gameScore);
-
+        gameOverController.setHighScore(highScore);
         Scene gameOverScene = new Scene(gameOverRoot);
         Stage primaryStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         primaryStage.setScene(gameOverScene);
@@ -567,8 +642,11 @@ class Platform extends Rectangle {
         setCurrentCoordinate(previousGap + rectangleWidth + r);
         X1 = previousGap + r;
         X2 = previousGap + rectangleWidth + r;
+        try {
+            gamePane.getChildren().addAll(rectangle, redDot);
+        }catch (NullPointerException n) {
 
-        gamePane.getChildren().addAll(rectangle, redDot);
+        }
 
         if (!isFirstPlatform ) {
 //            && Cherry.generateRandomBoolean()
