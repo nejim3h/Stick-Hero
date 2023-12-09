@@ -266,6 +266,12 @@ public class HelloController {
                         updateHighScoreLabel();
                     }
                 }
+                if(highScore<score){
+                    System.out.println(score);
+                    setHighScore(score);
+                    updateHighScoreLabel();
+                    System.out.println(highScore);
+                }
             }
             else {
                 Platform.reset();
